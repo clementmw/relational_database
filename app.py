@@ -57,7 +57,7 @@ def save_database(db):
 # load database
 db = load_db()
 
-app.route('/')
+@app.route('/')
 def index():
     users = db.get_table("users")
     transactions = db.get_table("transactions")
@@ -78,13 +78,13 @@ def index():
     }
     return render_template('index.html', stats=stat)
 
-app.route('/users')
+@app.route('/users')
 def users():
     users = db.get_table("users")
     all_users = users.select_all()
     return render_template('users.html', users=all_users)
 
-app.route('/add/user', methods=['POST'])
+@app.route('/add/user', methods=['POST'])
 def add_user():
     try:
         users_table = db.get_table("users")
@@ -138,18 +138,16 @@ def transactions():
         for row in result:
             formatted.append({
                 'id': row['transactions.id'],
-                'user_name': row['users.name'],
+                'user_name': f"{row['users.first_name']} {row['users.last_name']}",  # Fixed
                 'amount': row['transactions.amount'],
-                'description': row['transactions.description'],
-                'is_fraud': row['transactions.is_fraud'],
-                'created_at': row['transactions.created_at']
+                'timestamp': row['transactions.timestamp'],  # Fixed
+                'is_fraud': row['transactions.is_fraud']
             })
         
         return render_template('transactions.html', transactions=formatted)
     
     except Exception as e:
         return render_template('transactions.html', transactions=[], error=str(e))
-    
 @app.route('/transactions/add', methods=['POST'])
 def add_transaction():
     """Add a new transaction"""
