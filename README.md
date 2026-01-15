@@ -181,7 +181,7 @@ Then open your browser to: **http://127.0.0.1:5000**
 **Transactions Management (`/transactions`)**
 - View all transactions with user names (INNER JOIN demonstration)
 - Add transactions with user dropdown selection
-- Automatic fraud detection (flags transactions > $3,000)
+- Automatic fraud detection (flags transactions > KSH1,000)
 - Toggle fraud status manually
 - Timestamp tracking
 
