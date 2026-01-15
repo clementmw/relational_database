@@ -224,4 +224,8 @@ def api_stats():
     })
 
 if __name__ == '__main__':
+    # Development server
     app.run(debug=True, port=5000)
+else:
+    if not os.path.exists(DB_FILE):
+        db = load_db()
