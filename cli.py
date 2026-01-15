@@ -225,30 +225,6 @@ class REPL:
         except Exception as e:
             print(f"Error creating table: {e}")
 
-    def parse_values(self, value_str: str) -> Any:
-        """Parse a single value"""
-        value_str = value_str.strip()
-        
-        # String
-        if value_str.startswith("'") and value_str.endswith("'"):
-            return value_str[1:-1]
-        # Boolean
-        elif value_str.upper() == "TRUE":
-            return True
-        elif value_str.upper() == "FALSE":
-            return False
-        # NULL
-        elif value_str.upper() == "NULL":
-            return None
-        # Number
-        else:
-            try:
-                if '.' not in value_str:
-                    return int(value_str)
-                else:
-                    return float(value_str)
-            except ValueError:
-                raise ValueError(f"Invalid value: {value_str}")
     def handle_insert(self, command: str):
         """
         handles inserting data to the db
