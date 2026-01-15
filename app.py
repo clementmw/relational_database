@@ -72,7 +72,7 @@ def index():
     stat = {
         "total_users": total_users,
         "total_transactions": total_transactions,
-        "total_fraudulent": total_fraudulent,
+        "fraud_count": total_fraudulent,
         "total_amount": total_amount,
     
     }
@@ -130,6 +130,10 @@ def delete_user(user_id):
 def transactions():
     """List all transactions with user info (JOIN)"""
     try:
+        # Get all users for the dropdown
+        users_table = db.get_table("users")
+        all_users = users_table.select_all()
+        
         # Perform JOIN
         result = db.inner_join("transactions", "users", "user_id", "id")
         
@@ -138,16 +142,19 @@ def transactions():
         for row in result:
             formatted.append({
                 'id': row['transactions.id'],
-                'user_name': f"{row['users.first_name']} {row['users.last_name']}",  # Fixed
+                'user_name': f"{row['users.first_name']} {row['users.last_name']}",
                 'amount': row['transactions.amount'],
-                'timestamp': row['transactions.timestamp'],  # Fixed
+                'timestamp': row['transactions.timestamp'],
                 'is_fraud': row['transactions.is_fraud']
             })
         
-        return render_template('transactions.html', transactions=formatted)
+        return render_template('transactions.html', transactions=formatted, all_users=all_users)
     
     except Exception as e:
-        return render_template('transactions.html', transactions=[], error=str(e))
+        users_table = db.get_table("users")
+        all_users = users_table.select_all()
+        return render_template('transactions.html', transactions=[], all_users=all_users, error=str(e))
+
 @app.route('/transactions/add', methods=['POST'])
 def add_transaction():
     """Add a new transaction"""
@@ -163,8 +170,8 @@ def add_transaction():
         description = request.form['description']
         created_at = datetime.now().strftime("%Y-%m-%d")
         
-        # Simple fraud detection: flag if amount > $3000
-        is_fraud = amount > 3000
+        # Simple fraud detection: flag if amount > $1000
+        is_fraud = amount >= 1000
         
         transactions_table.insert({
             "id": new_id,
@@ -172,7 +179,7 @@ def add_transaction():
             "amount": amount,
             "description": description,
             "is_fraud": is_fraud,
-            "created_at": created_at
+            "timestamp": created_at
         })
         
         save_database(db)
