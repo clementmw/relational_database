@@ -164,6 +164,28 @@ python app.py
 Then open your browser to: **http://127.0.0.1:5000**
 
 #### Web App Features:
+## Stack
+
+- **Backend:** Flask (Python web framework)
+- **Frontend:** HTML5 + Tailwind CSS (via CDN)
+- **Database:** Custom RDBMS (this project!)
+- **Persistence:** Python pickle format
+- **API:** RESTful JSON endpoints
+
+**API Endpoints:**
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/` | Dashboard with statistics |
+| GET | `/users` | List all users |
+| POST | `/add/user` | Create new user |
+| POST | `/users/delete/<id>` | Delete user by ID |
+| GET | `/transactions` | List transactions (with JOIN) |
+| POST | `/transactions/add` | Create new transaction |
+| POST | `/transactions/flag/<id>` | Toggle fraud status |
+| GET | `/api/stats` | Get statistics as JSON |
+
+---
 
 **Dashboard (`/`)**
 - Total users count
