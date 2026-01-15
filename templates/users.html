@@ -33,17 +33,20 @@
             <table class="min-w-full">
                 <thead class="bg-gray-50 border-b">
                     <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ user.id }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.first_name }} {{ user.last_name }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ user.email }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ user.created_at }}</td>
-                </tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">First Name</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Name</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     {% for user in users %}
                     <tr class="hover:bg-gray-50">
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ user.id }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.first_name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.last_name }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ user.email }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ user.created_at }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm">
@@ -66,12 +69,12 @@
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-semibold mb-2">First Name</label>
                     <input type="text" name="first_name" required 
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-semibold mb-2">Last Name</label>
                     <input type="text" name="last_name" required 
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
                 <div class="mb-6">
                     <label class="block text-gray-700 text-sm font-semibold mb-2">Email</label>
@@ -107,17 +110,17 @@
             const formData = new FormData(event.target);
 
             try {
-                const response = await fetch('/users/add', {
+                const response = await fetch('/add/user', {
                     method: 'POST',
                     body: formData
                 });
                 const result = await response.json();
 
-                if (result.success) {
+                if (response.ok) {
                     alert('User added successfully!');
                     location.reload();
                 } else {
-                    alert('Error: ' + result.message);
+                    alert('Error: ' + (result.error || result.message));
                 }
             } catch (error) {
                 alert('Error adding user: ' + error);
